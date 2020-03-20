@@ -1,0 +1,17 @@
+@RELATION iris
+
+@ATTRIBUTE wind	REAL
+@ATTRIBUTE rain 	REAL
+@ATTRIBUTE temp		REAL
+@ATTRIBUTE air-pollution	REAL
+@ATTRIBUTE cloud-coverage	REAL
+@ATTRIBUTE humidity 	REAL
+@ATTRIBUTE seismic-activity		REAL
+@ATTRIBUTE cisnienie	REAL
+@ATTRIBUTE class 	{Krakow,Warszawa,Katowice, Kielce, Elk}
+
+@DATA
+5.1,3.5,1.4,0.2,Iris-setosa
+%
+%
+%
