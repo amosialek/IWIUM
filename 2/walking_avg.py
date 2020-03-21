@@ -9,6 +9,7 @@ def walking_avg(values):
         sum-=float(values[i])
         sum+=float(values[i+10])
     return [str(r) for r in res]
+    
 if __name__ == '__main__':
     if(len(sys.argv)==3):
         with open(sys.argv[1],'r') as f:
