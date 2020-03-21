@@ -4,9 +4,10 @@ import gym
 
 
 class QLearner:
-    def __init__(self, alpha=0.1, gamma=0.01, eps=0.0):
+    def __init__(self, alpha=0.1, gamma=0.01, eps=0.0, sarsa=False):
         self.alpha = alpha
         self.gamma = gamma
+        self.sarsa = sarsa
         self.eps = eps
         self.results = []
         self.knowledge = {}
@@ -31,7 +32,7 @@ class QLearner:
             reward_sum = self.attempt(i)
             self.sum += reward_sum
             self.results.append(reward_sum)
-        #    print(reward_sum)
+            print(reward_sum)
 
     def attempt(self, iteration):
         observation = self.discretise(self.environment.reset())
@@ -55,7 +56,10 @@ class QLearner:
                 reward=-1#-1000
             else:
                 reward=0#0.0
-            self.update_knowledge(action, observation, new_observation, reward)
+            if self.sarsa:
+                self.update_knowledge_SARSA(action, observation, new_observation, reward)
+            else:
+                self.update_knowledge(action, observation, new_observation, reward)
             reward=1
             observation = new_observation
             reward_sum += reward
@@ -89,12 +93,12 @@ class QLearner:
         # else:
         #     self.knowledge[(observation,action)] = 0.99 * self.knowledge[(observation,action)] + 0.01 * reward_sum
 
-    def SARSA(self, action, new_action, observation, new_observation, reward):
-        self.knowledge[(observation,action)] = 
-            (1.0 - self.alpha) * self.knowledge[(observation,action)] 
-            + self.alpha * (reward + self.gamma * max(
-                        self.knowledge[(new_observation,0)], 
-                        self.knowledge[(new_observation,1)]) ) 
+    def update_knowledge_SARSA(self, action, observation, new_observation, reward):
+        self.knowledge[(observation,action)] = self.knowledge[(observation,action)] + self.alpha * (reward + 
+                    self.gamma * self.knowledge[(new_observation, self.pick_action(observation))] 
+                    - self.knowledge[(observation,action)] 
+                 )
+
 
 
 if __name__ == '__main__':
