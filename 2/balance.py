@@ -4,7 +4,7 @@ import gym
 
 
 class QLearner:
-    def __init__(self, alpha=0.1, gamma=0.01, eps=0.0, sarsa=False):
+    def __init__(self, alpha=0.01, gamma=0.01, eps=0.0, sarsa=False):
         self.alpha = alpha
         self.gamma = gamma
         self.sarsa = sarsa
