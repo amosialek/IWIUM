@@ -1,7 +1,7 @@
 import math
 import random
 import gym
-
+import itertools
 
 class QLearner:
     def __init__(self, alpha=0.01, gamma=0.01, eps=0.001, sarsa=False):
@@ -14,6 +14,10 @@ class QLearner:
         self.environment = gym.make('LunarLander-v2')
         self.attempt_no = 1
         self.sum = 0.0;
+        for i in range(4):
+            observations = itertools.product(*[[1,2,3,4] for i in range(8)])
+            for j in observations:
+                self.knowledge[(j,i)]=0.0
         self.upper_bounds = [
             1,1,1,1,1,1,1,1
         ]
@@ -22,28 +26,32 @@ class QLearner:
         ]
 
     def learn(self, max_attempts):
+        subsum=0
         for i in range(max_attempts):
             reward_sum = self.attempt(i)
             self.sum += reward_sum
+            subsum += reward_sum
             self.results.append(reward_sum)
-            print(reward_sum)
+            if(i%100==0):
+                print(subsum/100.0)
+                subsum=0
 
     def attempt(self, iteration):
         observation = self.discretise(self.environment.reset())
         done = False
         reward_sum = 0.0
         while not done:
-            if iteration%10000==999 or iteration < 20:
-                self.environment.render()
-            for i in range(4):
-                if (observation,i) not in self.knowledge:
-                    self.knowledge[(observation,i)]=0.0
+            # if iteration%10000==999 or iteration < 20:
+            #     self.environment.render()
+            # for i in range(4):
+            #     if (observation,i) not in self.knowledge:
+            #         self.knowledge[(observation,i)]=0.0
             action = self.pick_action(observation)
             new_observation, reward, done, info = self.environment.step(action)
             new_observation = self.discretise(new_observation)
-            for i in range(4):
-                if (new_observation,i) not in self.knowledge:
-                    self.knowledge[(new_observation,i)]=0.0
+            # for i in range(4):
+            #     if (new_observation,i) not in self.knowledge:
+            #         self.knowledge[(new_observation,i)]=0.0
             # if done and reward_sum<499:
             #     reward=-1#-1000
             # else:
@@ -60,6 +68,8 @@ class QLearner:
 
     def discretise(self, observation):
         bucket_count = 4;
+        for i in range(8):
+            observation[i]=max(self.lower_bounds[i]+0.000001,min(self.upper_bounds[i],observation[i]))
         res = []
         for i in range(8):
             res.append(math.ceil((observation[i]-self.lower_bounds[i])/(self.upper_bounds[i]-self.lower_bounds[i])*bucket_count))
