@@ -4,7 +4,7 @@ def main():
     iters = 10000
     age={}
     sets=[[0.1,0,0],[0.1,0.1,0],[0.1,0.1,0.1],[0.1,0.05,0.05]]
-    for age_set in sets
+    for age_set in sets:
         alpha = age_set[0]
         gamma = age_set[1]
         eps = age_set[2]
@@ -18,7 +18,7 @@ def main():
         lines=[]
         for i in range(iters):
             lines.append(';'.join([str(l.results[i]) for l in learners])+'\n')
-        with open("res/res_"+str(alpha)+'_'+str(gamma)+'_'+str(eps)+'.csv','w+') as f:
+        with open("res2/res_"+str(alpha)+'_'+str(gamma)+'_'+str(eps)+'.csv','w+') as f:
             f.writelines(lines)
     x=1
 
