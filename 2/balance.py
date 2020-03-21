@@ -32,7 +32,7 @@ class QLearner:
             reward_sum = self.attempt(i)
             self.sum += reward_sum
             self.results.append(reward_sum)
-            print(reward_sum)
+            #print(reward_sum)
 
     def attempt(self, iteration):
         observation = self.discretise(self.environment.reset())
